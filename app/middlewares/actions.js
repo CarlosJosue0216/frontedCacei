@@ -22,3 +22,14 @@ export async function login(rawFormData){
     }
     
 }
+export async function userLoged(nombre){
+    
+    try {
+        const response = await axios.post("http://localhost:4000/api/usuarios/userLoged", {nombre}       )
+        return response.data.msg
+    } catch (error) {
+        
+        return error
+    }
+    
+}

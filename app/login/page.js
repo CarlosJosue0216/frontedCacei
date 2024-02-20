@@ -7,15 +7,22 @@ import { login } from "../middlewares/actions";
 import Banner from "../components/banner";
 import { useRouter } from "next/navigation";
 import { useUser } from "../context/useContext";
+import { Auth } from "../middlewares/auth";
 
 const page =  () => {
+  
   const {user,usuarioLogeado} = useUser()
-  console.log(user)
   const router = useRouter()
   const [nombre, setNombre] = useState("");
   const [numControl, setNumControl] = useState("");
   const [alerta, setAlerta] = useState([])
   const [show, setShow] = useState(false)
+  if (user) {
+    Auth()
+  }else{
+    console.log("User inactivo")
+
+  }
   const formLogin =  async(e) => {
     e.preventDefault();
     console.log(nombre)
