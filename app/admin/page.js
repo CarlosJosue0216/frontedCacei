@@ -4,7 +4,7 @@ import { useUser } from "../context/useContext";
 import { Auth } from "../middlewares/auth";
 
 const admin = () => {
-  Auth()
+  
   
   return (
    <></>

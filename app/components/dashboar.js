@@ -1,32 +1,45 @@
+"use client";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 
 export default function Dashboar() {
+  const [showPreguntas, setSetshowPreguntas] = useState(false);
+  const subMenu = () => {
+    setSetshowPreguntas(!showPreguntas);
+  };
   return (
-    <div className="w-1/4 bg-gray-200 p-4 h-screen">
+    <div className=" bg-sky-100 p-4 h-screen">
       <h1 className="text-black text-2xl font-black">Administracion</h1>
-      <ul className="mt-10 flex flex-col justify-center ">
-        <li className="mb-2 p-5 text-xl font-bold bg-gray-300  rounded-lg">
-          <Link href="/admin/usuarios" className=" p-5">
+      <div className="mt-10 flex flex-col justify-center  text-center">
+        <div className="mb-2 p-5 text-xl font-bold bg-sky-200 rounded-lg w-full">
+          <Link href="/admin/usuarios" className=" p-5 ">
             Usuarios
           </Link>
-        </li>
-        <li className="mb-2 p-5 text-xl font-bold bg-gray-300 rounded-lg">
-          <Link href="/admin/preguntas" className=" p-5">
+        </div>
+        <div className="mb-2  text-xl font-bold bg-sky-200 rounded-lg w-full">
+          <button onClick={subMenu} className="p-5">
             Preguntas
-          </Link>
-        </li>
-        <li className="mb-2 p-5 text-xl font-bold bg-gray-300 rounded-lg">
+          </button>
+          
+        </div>
+        {showPreguntas && (
+            <div className="mb-2 ms-3 py-5 text-xl font-bold bg-sky-200 rounded-lg w-full">
+            <Link href="/admin/preguntas" className=" py-5 ">
+              Añadir Preguntas
+            </Link>
+          </div>
+          )}
+        <div className="mb-2 p-5 text-xl font-bold bg-sky-200 rounded-lg w-full">
           <Link href="#" className=" p-5">
             Resultados
           </Link>
-        </li>
-        <li className="mb-2 p-5 text-xl font-bold bg-gray-300 rounded-lg">
+        </div>
+        <div className="mb-2 p-5 text-xl font-bold bg-sky-200 rounded-lg w-full">
           <Link href="#" className=" p-5">
             Evidencias
           </Link>
-        </li>
-      </ul>
+        </div>
+      </div>
     </div>
   );
 }
