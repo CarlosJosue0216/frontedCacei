@@ -1,38 +1,47 @@
 "use client";
 import { useUser } from "@/app/context/useContext";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 const colums = [
-    {
-		name: 'id',
-		selector: row => row.id,
-	},
-	{
-		name: 'titulo',
-		selector: row => row.titulo,
-	},
-    {
-		name: 'criterio',
-		selector: row => row.criterio,
-	},
-    
-]
+  {
+    name: "id",
+    selector: (row) => row.id,
+  },
+  {
+    name: "titulo",
+    selector: (row) => row.titulo,
+  },
+  {
+    name: "criterio",
+    selector: (row) => row.criterio,
+  },
+];
 const MostrarTodas = () => {
-  const { preguntas, getPreguntas } = useUser(); // Ajusta esto según tu contexto
-  console.log(preguntas);
-  
+  const { getPreguntas, dataUser } = useUser(); // Ajusta esto según tu contexto
+  const [show, setShow] = useState(false);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    // Llamar a la función para obtener las preguntas cuando se monta el componente
-    getPreguntas();
-  }, [getPreguntas]);
-	if (!preguntas) {
-	  return <div>cargando...</div>;
-	}
-	console.log(preguntas);
+    const fetchData = async () => {
+      try {
+        if (!dataUser) {
+          await getPreguntas();
+        }
+      } catch (error) {
+        console.error("Error al obtener datos:", error);
+      } finally {
+        setLoading(false);
+        setShow(true);
+      }
+    };
+
+    fetchData();
+  }, [dataUser, getPreguntas]);
 
   return (
     <div>
-      
+      {loading ? <div>cargando...</div> : show && Array.isArray(dataUser) && <DataTable columns={colums} data={dataUser} />}
+
     </div>
   );
 };

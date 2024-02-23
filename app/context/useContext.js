@@ -7,6 +7,7 @@ export const UserContext = createContext();
 
 export default function UserProvider({ children }) {
   const [preguntas, setPreguntas] = useState({});
+  const [dataUser, setDataUser] = useState({})
   const [user, setUser] = useState(() => {
     const storedUserData = localStorage?.getItem('userData');
     return storedUserData ? JSON.parse(storedUserData) : null;
@@ -14,7 +15,7 @@ export default function UserProvider({ children }) {
 
   const getPreguntas = async () => {
     const { data } = await axios("http://localhost:4000/api/preguntas/viewAll");
-    console.log(data)
+    setDataUser(data)
   };
   useEffect(() => {
     getPreguntas();
@@ -22,7 +23,7 @@ export default function UserProvider({ children }) {
   }, []);
 
   return (
-    <UserContext.Provider value={{ user,setUser, preguntas,getPreguntas }}>
+    <UserContext.Provider value={{ user,setUser, preguntas,getPreguntas,dataUser }}>
       {children}
     </UserContext.Provider>
   );
