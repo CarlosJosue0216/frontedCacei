@@ -71,7 +71,7 @@ const eliminarRespuesta = (index) => {
   return (
     <div className="w-full h-screen flex flex-col justify-center items-center">
       <form
-        className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
+        className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-3/4"
         onSubmit={guardarPreguntaYRespuestas}
       >
         <div className="mb-4">
@@ -82,7 +82,7 @@ const eliminarRespuesta = (index) => {
             Titulo pregunta
           </label>
           <input
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-wrap text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             id="pregunta"
             type="text"
             onChange={(e) => setPregunta(e.target.value)}

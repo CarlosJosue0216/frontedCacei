@@ -20,15 +20,21 @@ export default function Dashboar() {
           <button onClick={subMenu} className="p-5">
             Preguntas
           </button>
-          
         </div>
         {showPreguntas && (
+          <div>
             <div className="mb-2 ms-3 py-5 text-xl font-bold bg-sky-200 rounded-lg w-full">
-            <Link href="/admin/preguntas" className=" py-5 ">
-              Añadir Preguntas
-            </Link>
+              <Link href="/admin/preguntas" className=" py-5 ">
+                Añadir Preguntas
+              </Link>
+            </div>
+            <div className="mb-2 ms-3 py-5 text-xl font-bold bg-sky-200 rounded-lg w-full">
+              <Link href="/admin/preguntas/verTodas" className=" py-5 ">
+                Todas las preguntas
+              </Link>
+            </div>
           </div>
-          )}
+        )}
         <div className="mb-2 p-5 text-xl font-bold bg-sky-200 rounded-lg w-full">
           <Link href="#" className=" p-5">
             Resultados

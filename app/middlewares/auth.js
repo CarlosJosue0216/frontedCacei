@@ -1,36 +1,25 @@
 "use client";
 import { usePathname, useRouter } from "next/navigation";
 import { useUser } from "../context/useContext";
-import { userLoged } from "./actions";
 
-export async function Auth() {
-    const pathname= usePathname()
-    console.log(pathname)
+export  function Auth() {
   const router =  useRouter();
-  const { user } = await useUser();
-  
-  if (!user) {
-    return router.push("/login");
+  const pathName = usePathname() 
+  const { user } =  useUser();
+  console.log(user)
+  if (user?.rol === 0) {
+    if (pathName.startsWith('/admin')) {
+      // Permitir navegación en subrutas para el administrador
+      // Puedes agregar más lógica específica para las subrutas aquí
+    } else {
+      // Redirigir a /admin si el usuario tiene rol 0 pero no está en una subruta de /admin
+      router.push('/admin');
+    }
+  } else if (user?.rol === 1) {
+    router.push('/');
+  } else if (!user) {
+    router.push('/login');
+  } else if (pathName === '/login') {
+    router.push('/');
   }
-  console.log(user);
-  if (user && pathname =="/login") {
-    console.log("login")
-    await userLoged(user?.nombre)
-    .then((result) => {
-        localStorage.setItem("user",JSON.stringify(result))
-      if (result?.rol == 1) {
-        return router.push("/");
-      }
-      if (result?.rol == 0) {
-        return router.push("/admin");
-      }
-      if (result?.rol == 0) {
-        return router.push("/admin");
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-  }
-  
 }
