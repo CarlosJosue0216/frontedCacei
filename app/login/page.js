@@ -36,7 +36,7 @@ const page = () => {
           if (result.msg == "Login exitoso") {
             userLoged(rawFormData.nombre)
               .then((result) => {
-                setUser(rawFormData);
+                setUser(result);
                 localStorage.setItem("userData", JSON.stringify(result));
 
                 router.push("/admin");
