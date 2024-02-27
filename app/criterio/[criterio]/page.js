@@ -43,7 +43,7 @@ export default function Page({ params }) {
           <form className="w-3/4  mx-auto p-4 border rounded shadow-lg flex flex-col items-center justify-center">
             {preguntasFiltradas.map((pregunta) => (
               <div key={pregunta.id} className="mb-4 p-5 text-center flex items-center justify-center w-full ">
-                <div className="w-3/4 p-3 border-r-2">
+                <div className={`w-3/4 p-3 ${pregunta.tipo == 0 ? "border-r-2": "w-full"} `}>  
                   <h2 className="text-lg font-semibold mb-2">
                     {pregunta.criterio + " .-" + pregunta.titulo}
                   </h2>
@@ -67,12 +67,16 @@ export default function Page({ params }) {
                     ))}
                   </div>
                 </div>
-                <div className="w-1/4 flex flex-col p-3">
+                {pregunta.tipo == 0 ? (<div className="w-1/4 flex flex-col p-3">
                   <label for="myfile">Subir evidencia:</label>
                   <input type="file" id="myfile" name="myfile" />
-                </div>
+                </div>) : ""}
               </div>
             ))}
+            <div className="flex flex-col p-3 justify-center items-center">
+              <label>Valoracion argumentativa</label>
+              <textarea cols="40" rows="5"></textarea>
+            </div>
             <button
               type="submit"
               className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue active:bg-blue-800"
