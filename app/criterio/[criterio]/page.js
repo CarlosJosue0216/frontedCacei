@@ -1,14 +1,31 @@
 "use client";
 
+import Banner from "@/app/components/banner";
 import { useUser } from "@/app/context/useContext";
+import axios from "axios";
+
 import { useEffect, useState } from "react";
 
 export default function Page({ params }) {
   const { criterio } = params;
-  const { getPreguntas, dataUser } = useUser(); // Ajusta esto según tu contexto
+  const { getPreguntas, dataUser, user } = useUser();
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(true);
-
+  const [respuestasSeleccionadas, setRespuestasSeleccionadas] = useState({});
+  const [evidenciaFile, setEvidenciaFile] = useState(null);
+  const [valoracion, setValoracion] = useState("");
+  const [respuestasFormulario, setRespuestasFormulario] = useState({});
+  const idUsuario = user.id;
+  const [formReset, setFormReset] = useState(false);
+  const [alerta, setAlerta] = useState(false);
+  const [message, setMessage] = useState(null);
+  const resetForm = () => {
+    setFormReset(true);
+    setRespuestasSeleccionadas({});
+    setEvidenciaFile(null);
+    setValoracion("");
+    setRespuestasFormulario({});
+  };
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -25,13 +42,75 @@ export default function Page({ params }) {
 
     fetchData();
   }, [dataUser, getPreguntas]);
-  // Filtrar las preguntas que comienzan con el criterio deseado
+
+  const handleRespuestaChange = (preguntaId, contenido) => {
+    setRespuestasSeleccionadas({
+      ...respuestasSeleccionadas,
+      [preguntaId]: contenido,
+    });
+  };
+
+  const handleFileChange = (preguntaId, file) => {
+    setEvidenciaFile(file);
+
+    setRespuestasFormulario({
+      ...respuestasFormulario,
+      [preguntaId]: {
+        idUsuario,
+        respuesta: respuestasSeleccionadas[preguntaId],
+        evidenciaFile: file,
+      },
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    for (const clave in respuestasFormulario) {
+      if (respuestasFormulario.hasOwnProperty(clave)) {
+        const elemento = respuestasFormulario[clave];
+        console.log(clave);
+        console.log(elemento.evidenciaFile);
+        console.log(elemento.idUsuario);
+        console.log(elemento.respuesta);
+        try {
+          const response = await axios.post(
+            "http://localhost:4000/api/files/upload",
+            {
+              archivoFront: elemento.evidenciaFile,
+              idUsuario: elemento.idUsuario,
+              idPregunta: clave,
+            },
+            {
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+            }
+          );
+          console.log(response.data.resultado);
+          setMessage({
+            msg: response?.data.resultado,
+            typeAlert:true
+          })
+          setAlerta(true)
+          resetForm();
+        } catch (error) {
+          console.error("Error al enviar las respuestas al backend:", error);
+        }
+      }
+    } 
+    
+    setTimeout(() => {
+      setAlerta(false)
+      setMessage({})
+    }, 4000);
+    // Resto del código para procesar los datos del formulario
+  };
+
   const preguntasFiltradas = loading
     ? []
     : show &&
       Array.isArray(dataUser) &&
       dataUser.filter((pregunta) => pregunta?.criterio.startsWith(criterio));
-  console.log(preguntasFiltradas);
 
   return (
     <>
@@ -40,22 +119,43 @@ export default function Page({ params }) {
       ) : (
         show &&
         Array.isArray(preguntasFiltradas) && (
-          <form className="w-3/4  mx-auto p-4 border rounded shadow-lg flex flex-col items-center justify-center">
+          <form
+            className="w-3/4 mx-auto p-4 border rounded shadow-lg flex flex-col items-center justify-center"
+            onSubmit={handleSubmit}
+            encType="multipart/form-data"
+            key={formReset}
+          >
             {preguntasFiltradas.map((pregunta) => (
-              <div key={pregunta.id} className="mb-4 p-5 text-center flex items-center justify-center w-full ">
-                <div className={`w-3/4 p-3 ${pregunta.tipo == 0 ? "border-r-2": "w-full"} `}>  
+              <div
+                key={pregunta.id}
+                className="mb-4 p-5 text-center flex items-center justify-center w-full "
+              >
+                <div
+                  className={`w-3/4 p-3 ${
+                    pregunta.tipo === 0 ? "border-r-2" : "w-full"
+                  } `}
+                >
                   <h2 className="text-lg font-semibold mb-2">
                     {pregunta.criterio + " .-" + pregunta.titulo}
                   </h2>
                   <div className="flex justify-center items-center ">
                     {pregunta.respuestas.map((respuesta) => (
-                      <div key={respuesta.id} className="flex items-center mx-2 p-2">
+                      <div
+                        key={respuesta.id}
+                        className="flex items-center mx-2 p-2"
+                      >
                         <input
                           type="radio"
                           id={`respuesta_${respuesta.id}`}
                           name={`pregunta_${pregunta.id}`}
                           value={respuesta.contenido}
                           className="mx-2"
+                          onChange={() =>
+                            handleRespuestaChange(
+                              pregunta.id,
+                              respuesta.contenido
+                            )
+                          }
                         />
                         <label
                           htmlFor={`respuesta_${respuesta.id}`}
@@ -67,15 +167,31 @@ export default function Page({ params }) {
                     ))}
                   </div>
                 </div>
-                {pregunta.tipo == 0 ? (<div className="w-1/4 flex flex-col p-3">
-                  <label for="myfile">Subir evidencia:</label>
-                  <input type="file" id="myfile" name="myfile" />
-                </div>) : ""}
+                {pregunta.tipo === 0 ? (
+                  <div className="w-1/4 flex flex-col p-3">
+                    <label htmlFor="files">Subir evidencia:</label>
+                    <input
+                      type="file"
+                      id="files"
+                      name="files"
+                      onChange={(e) =>
+                        handleFileChange(pregunta.id, e.target.files[0])
+                      }
+                    />
+                  </div>
+                ) : (
+                  ""
+                )}
               </div>
             ))}
             <div className="flex flex-col p-3 justify-center items-center">
               <label>Valoracion argumentativa</label>
-              <textarea cols="40" rows="5"></textarea>
+              <textarea
+                cols="40"
+                rows="5"
+                value={valoracion}
+                onChange={(e) => setValoracion(e.target.value)}
+              ></textarea>
             </div>
             <button
               type="submit"
@@ -83,6 +199,7 @@ export default function Page({ params }) {
             >
               Guardar respuestas
             </button>
+            {alerta && <Banner alerta={message} />}
           </form>
         )
       )}
