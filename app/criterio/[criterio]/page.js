@@ -62,17 +62,28 @@ export default function Page({ params }) {
       },
     });
   };
-
+console.log(respuestasFormulario)
   const handleSubmit = async (e) => {
     e.preventDefault();
     for (const clave in respuestasFormulario) {
-      if (respuestasFormulario.hasOwnProperty(clave)) {
-        const elemento = respuestasFormulario[clave];
-        console.log(clave);
-        console.log(elemento.evidenciaFile);
-        console.log(elemento.idUsuario);
-        console.log(elemento.respuesta);
-        try {
+      console.log("Iteración para clave:", clave);
+
+  const elemento = respuestasFormulario[clave];
+  console.log("idUsuario:", elemento.idUsuario);
+  console.log("respuesta:", elemento.respuesta);
+  console.log("idPregunta:", clave);
+
+  try {
+    const response = await axios.post("http://localhost:4000/api/resultado/addResult", {
+      idUsuario: elemento.idUsuario,
+      idPregunta: clave,
+      idRespuesta: elemento.respuesta,
+    });
+    console.log("Respuesta del servidor:", response);
+  } catch (error) {
+    console.log("Error en la solicitud:", error);
+  }
+        /* try {
           const response = await axios.post(
             "http://localhost:4000/api/files/upload",
             {
@@ -95,14 +106,11 @@ export default function Page({ params }) {
           resetForm();
         } catch (error) {
           console.error("Error al enviar las respuestas al backend:", error);
-        }
-      }
+        } */
+      
     } 
     
-    setTimeout(() => {
-      setAlerta(false)
-      setMessage({})
-    }, 4000);
+    
     // Resto del código para procesar los datos del formulario
   };
 
@@ -153,7 +161,7 @@ export default function Page({ params }) {
                           onChange={() =>
                             handleRespuestaChange(
                               pregunta.id,
-                              respuesta.contenido
+                              respuesta.id
                             )
                           }
                         />
