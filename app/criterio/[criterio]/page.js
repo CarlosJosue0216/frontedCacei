@@ -46,7 +46,7 @@ export default function Page({ params }) {
   const handleRespuestaChange = (preguntaId, contenido) => {
     setRespuestasSeleccionadas({
       ...respuestasSeleccionadas,
-      [preguntaId]: contenido,
+      [preguntaId]: { contenido, idUsuario },
     });
   };
 
@@ -62,55 +62,63 @@ export default function Page({ params }) {
       },
     });
   };
-console.log(respuestasFormulario)
+  console.log(respuestasFormulario);
+  console.log(respuestasSeleccionadas);
   const handleSubmit = async (e) => {
     e.preventDefault();
     for (const clave in respuestasFormulario) {
       console.log("Iteración para clave:", clave);
 
-  const elemento = respuestasFormulario[clave];
-  console.log("idUsuario:", elemento.idUsuario);
-  console.log("respuesta:", elemento.respuesta);
-  console.log("idPregunta:", clave);
+      const elemento = respuestasFormulario[clave];
 
-  try {
-    const response = await axios.post("http://localhost:4000/api/resultado/addResult", {
-      idUsuario: elemento.idUsuario,
-      idPregunta: clave,
-      idRespuesta: elemento.respuesta,
-    });
-    console.log("Respuesta del servidor:", response);
-  } catch (error) {
-    console.log("Error en la solicitud:", error);
-  }
-        /* try {
-          const response = await axios.post(
-            "http://localhost:4000/api/files/upload",
-            {
-              archivoFront: elemento.evidenciaFile,
-              idUsuario: elemento.idUsuario,
-              idPregunta: clave,
+      try {
+        const response = await axios.post(
+          "http://localhost:4000/api/files/upload",
+          {
+            archivoFront: elemento.evidenciaFile,
+            idUsuario: elemento.idUsuario,
+            idPregunta: clave,
+          },
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
             },
-            {
-              headers: {
-                "Content-Type": "multipart/form-data",
-              },
-            }
-          );
-          console.log(response.data.resultado);
-          setMessage({
-            msg: response?.data.resultado,
-            typeAlert:true
-          })
-          setAlerta(true)
-          resetForm();
-        } catch (error) {
-          console.error("Error al enviar las respuestas al backend:", error);
-        } */
-      
-    } 
-    
-    
+          }
+        );
+        console.log(response.data.resultado);
+        setMessage({
+          msg: response?.data.resultado,
+          typeAlert: true,
+        });
+        setAlerta(true);
+      } catch (error) {
+        console.error("Error al enviar las respuestas al backend:", error);
+      }
+    }
+    for (const clave in respuestasSeleccionadas) {
+      const elemento = respuestasSeleccionadas[clave];
+      console.log(elemento);
+      try {
+        const response = await axios.post(
+          "http://localhost:4000/api/resultado/addResult",
+          {
+            idUsuario: elemento.idUsuario,
+            idPregunta: clave,
+            idRespuesta: elemento.contenido,
+          }
+        );
+        console.log("Respuesta del servidor:", response);
+        setMessage({
+          msg: response?.data.msg,
+          typeAlert: true,
+        });
+        setAlerta(true);
+      } catch (error) {
+        console.log("Error en la solicitud:", error);
+      }
+    }
+    resetForm();
+
     // Resto del código para procesar los datos del formulario
   };
 
@@ -159,10 +167,7 @@ console.log(respuestasFormulario)
                           value={respuesta.contenido}
                           className="mx-2"
                           onChange={() =>
-                            handleRespuestaChange(
-                              pregunta.id,
-                              respuesta.id
-                            )
+                            handleRespuestaChange(pregunta.id, respuesta.id)
                           }
                         />
                         <label
