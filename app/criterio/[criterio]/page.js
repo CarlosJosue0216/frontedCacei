@@ -96,7 +96,7 @@ export default function Page({ params }) {
     const newRespuestas = {
       ...respuestasSeleccionadas,
       [preguntaId]: { contenido, idUsuario },
-      valoracion,
+      
     };
 
     setRespuestasSeleccionadas(newRespuestas);
