@@ -1,8 +1,10 @@
 import React from "react";
 import logotec from "../../public/logotec.png";
 import Image from "next/image";
+import CerrarSesion from "./cerrarSesion";
 
 const NavBar = () => {
+  
   return (
     <nav className="bg-gray-800">
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
@@ -54,24 +56,7 @@ const NavBar = () => {
               </div>
             </div>
           </div>
-          <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-            
-            <div className="relative ml-3">
-              <div>
-                <button
-                  type="button"
-                  className="relative flex rounded-full text-white font-black hover:bg-gray-700 p-2  focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                  id="user-menu-button"
-                  aria-expanded="false"
-                  aria-haspopup="true"
-                >
-                  Cerrar Sesión
-                </button>
-              </div>
-
-              
-            </div>
-          </div>
+          <CerrarSesion/>
         </div>
 
         

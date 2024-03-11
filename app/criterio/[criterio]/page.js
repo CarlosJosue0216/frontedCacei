@@ -8,10 +8,19 @@ import { useEffect, useState } from "react";
 
 export default function Page({ params }) {
   const { criterio } = params;
+  const respuestasKey = `respuestasSeleccionadas_${criterio}`;
+  const formEnviadoKey = `formEnviado_${criterio}`;
   const { getPreguntas, dataUser, user } = useUser();
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [respuestasSeleccionadas, setRespuestasSeleccionadas] = useState({});
+  const [respuestasSeleccionadas, setRespuestasSeleccionadas] = useState(() => {
+    const storedAnswers = localStorage.getItem(respuestasKey);
+    return storedAnswers ? JSON.parse(storedAnswers) : {};
+  });
+  const [valoracionLocalStorage, setValoracionLocalStorage] = useState(() => {
+    const storedValoracion = localStorage.getItem("valoracion");
+    return storedValoracion || "";
+  });
   const [evidenciaFile, setEvidenciaFile] = useState(null);
   const [valoracion, setValoracion] = useState("");
   const [respuestasFormulario, setRespuestasFormulario] = useState({});
@@ -19,12 +28,13 @@ export default function Page({ params }) {
   const [formReset, setFormReset] = useState(false);
   const [alerta, setAlerta] = useState(false);
   const [message, setMessage] = useState(null);
+  const [formEnviado, setFormEnviado] = useState(() => {
+    const storedFormEnviado = localStorage.getItem(formEnviadoKey);
+    return storedFormEnviado ? JSON.parse(storedFormEnviado) : false;
+  });
   const resetForm = () => {
-    setFormReset(true);
-    setRespuestasSeleccionadas({});
-    setEvidenciaFile(null);
-    setValoracion("");
-    setRespuestasFormulario({});
+    // Limpiar el localStorage al reiniciar el formulario
+    setFormEnviado(false);
   };
   useEffect(() => {
     const fetchData = async () => {
@@ -43,11 +53,56 @@ export default function Page({ params }) {
     fetchData();
   }, [dataUser, getPreguntas]);
 
+  // ... (resto de tu código)
+
+  useEffect(() => {
+    const loadStoredAnswers = () => {
+      const storedAnswers = localStorage.getItem(respuestasKey);
+      if (storedAnswers) {
+        setRespuestasSeleccionadas(JSON.parse(storedAnswers));
+      }
+    };
+
+    loadStoredAnswers();
+
+    const storedFormEnviado = localStorage.getItem(formEnviadoKey);
+    if (storedFormEnviado) {
+      setFormEnviado(JSON.parse(storedFormEnviado));
+    }
+  }, [criterio]);
+
+  const saveAnswersToLocalStorage = (respuestas) => {
+    localStorage.setItem(respuestasKey, JSON.stringify(respuestas));
+  };
+
+  const saveFormEnviadoToLocalStorage = (value) => {
+    localStorage.setItem(formEnviadoKey, JSON.stringify(value));
+  };
+  const handleValoracion = (value) => {
+    const newRespuestas = {
+      ...respuestasSeleccionadas,
+
+      valoracion: value,
+    };
+    setValoracion(value)
+    setValoracionLocalStorage(value);
+    setRespuestasSeleccionadas(newRespuestas);
+
+    // Guardar las respuestas en el localStorage
+    saveAnswersToLocalStorage(newRespuestas);
+    localStorage.setItem("valoracion", value);
+  };
   const handleRespuestaChange = (preguntaId, contenido) => {
-    setRespuestasSeleccionadas({
+    const newRespuestas = {
       ...respuestasSeleccionadas,
       [preguntaId]: { contenido, idUsuario },
-    });
+      valoracion,
+    };
+
+    setRespuestasSeleccionadas(newRespuestas);
+
+    // Guardar las respuestas en el localStorage
+    saveAnswersToLocalStorage(newRespuestas);
   };
 
   const handleFileChange = (preguntaId, file) => {
@@ -117,9 +172,17 @@ export default function Page({ params }) {
         console.log("Error en la solicitud:", error);
       }
     }
-    resetForm();
 
     // Resto del código para procesar los datos del formulario
+    setFormEnviado(true);
+
+    // Guardar respuestas y formEnviado en el localStorage
+    saveAnswersToLocalStorage(respuestasSeleccionadas);
+    saveFormEnviadoToLocalStorage(true);
+    setTimeout(() => {
+      setAlerta(false);
+      setMessage({});
+    }, 4000);
   };
 
   const preguntasFiltradas = loading
@@ -141,6 +204,16 @@ export default function Page({ params }) {
             encType="multipart/form-data"
             key={formReset}
           >
+            {formEnviado && (
+              <button
+                type="button"
+                onClick={resetForm}
+                className="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-700 focus:outline-none focus:shadow-outline-gray active:bg-gray-800 mt-4"
+                disabled={!formEnviado}
+              >
+                Editar respuestas
+              </button>
+            )}
             {preguntasFiltradas.map((pregunta) => (
               <div
                 key={pregunta.id}
@@ -164,11 +237,16 @@ export default function Page({ params }) {
                           type="radio"
                           id={`respuesta_${respuesta.id}`}
                           name={`pregunta_${pregunta.id}`}
-                          value={respuesta.contenido}
+                          value={respuesta.id}
                           className="mx-2"
                           onChange={() =>
                             handleRespuestaChange(pregunta.id, respuesta.id)
                           }
+                          checked={
+                            respuestasSeleccionadas[pregunta.id]?.contenido ===
+                            respuesta.id
+                          }
+                          disabled={formEnviado}
                         />
                         <label
                           htmlFor={`respuesta_${respuesta.id}`}
@@ -190,6 +268,7 @@ export default function Page({ params }) {
                       onChange={(e) =>
                         handleFileChange(pregunta.id, e.target.files[0])
                       }
+                      disabled={formEnviado}
                     />
                   </div>
                 ) : (
@@ -202,16 +281,20 @@ export default function Page({ params }) {
               <textarea
                 cols="40"
                 rows="5"
-                value={valoracion}
-                onChange={(e) => setValoracion(e.target.value)}
+                value={valoracionLocalStorage}
+                onChange={(e)=>handleValoracion(e.target.value)}
+                disabled={formEnviado}
               ></textarea>
             </div>
-            <button
-              type="submit"
-              className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue active:bg-blue-800"
-            >
-              Guardar respuestas
-            </button>
+            {!formEnviado && (
+              <button
+                type="submit"
+                className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue active:bg-blue-800"
+                disabled={formEnviado}
+              >
+                Guardar respuestas
+              </button>
+            )}
             {alerta && <Banner alerta={message} />}
           </form>
         )
