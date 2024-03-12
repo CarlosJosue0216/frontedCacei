@@ -84,7 +84,7 @@ export default function Page({ params }) {
 
       valoracion: value,
     };
-    setValoracion(value)
+    setValoracion(value);
     setValoracionLocalStorage(value);
     setRespuestasSeleccionadas(newRespuestas);
 
@@ -96,7 +96,6 @@ export default function Page({ params }) {
     const newRespuestas = {
       ...respuestasSeleccionadas,
       [preguntaId]: { contenido, idUsuario },
-      
     };
 
     setRespuestasSeleccionadas(newRespuestas);
@@ -258,22 +257,22 @@ export default function Page({ params }) {
                     ))}
                   </div>
                 </div>
-                {pregunta.tipo === 0 ? (
-                  <div className="w-1/4 flex flex-col p-3">
-                    <label htmlFor="files">Subir evidencia:</label>
-                    <input
-                      type="file"
-                      id="files"
-                      name="files"
-                      onChange={(e) =>
-                        handleFileChange(pregunta.id, e.target.files[0])
-                      }
-                      disabled={formEnviado}
-                    />
-                  </div>
-                ) : (
-                  ""
-                )}
+                {pregunta.tipo === 0
+                  ? !formEnviado && (
+                      <div className="w-1/4 flex flex-col p-3">
+                        <label htmlFor="files">Subir evidencia:</label>
+                        <input
+                          type="file"
+                          id="files"
+                          name="files"
+                          onChange={(e) =>
+                            handleFileChange(pregunta.id, e.target.files[0])
+                          }
+                          disabled={formEnviado}
+                        />
+                      </div>
+                    )
+                  : ""}
               </div>
             ))}
             <div className="flex flex-col p-3 justify-center items-center">
@@ -282,7 +281,7 @@ export default function Page({ params }) {
                 cols="40"
                 rows="5"
                 value={valoracionLocalStorage}
-                onChange={(e)=>handleValoracion(e.target.value)}
+                onChange={(e) => handleValoracion(e.target.value)}
                 disabled={formEnviado}
               ></textarea>
             </div>
