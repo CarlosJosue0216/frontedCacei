@@ -10,6 +10,7 @@ export default function Page({ params }) {
   const { criterio } = params;
   const respuestasKey = `respuestasSeleccionadas_${criterio}`;
   const formEnviadoKey = `formEnviado_${criterio}`;
+  const valoracionKey = `valoracion_${criterio}`; 
   const { getPreguntas, dataUser, user } = useUser();
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -18,7 +19,7 @@ export default function Page({ params }) {
     return storedAnswers ? JSON.parse(storedAnswers) : {};
   });
   const [valoracionLocalStorage, setValoracionLocalStorage] = useState(() => {
-    const storedValoracion = localStorage.getItem("valoracion");
+    const storedValoracion = localStorage.getItem(valoracionKey);
     return storedValoracion || "";
   });
   const [evidenciaFile, setEvidenciaFile] = useState(null);
@@ -90,7 +91,7 @@ export default function Page({ params }) {
 
     // Guardar las respuestas en el localStorage
     saveAnswersToLocalStorage(newRespuestas);
-    localStorage.setItem("valoracion", value);
+    localStorage.setItem(valoracionKey, value);
   };
   const handleRespuestaChange = (preguntaId, contenido) => {
     const newRespuestas = {
