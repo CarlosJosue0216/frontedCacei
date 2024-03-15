@@ -10,7 +10,7 @@ export default function Page({ params }) {
   const { criterio } = params;
   const respuestasKey = `respuestasSeleccionadas_${criterio}`;
   const formEnviadoKey = `formEnviado_${criterio}`;
-  const valoracionKey = `valoracion_${criterio}`; 
+  const valoracionKey = `valoracion_${criterio}`;
   const { getPreguntas, dataUser, user } = useUser();
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -235,6 +235,7 @@ export default function Page({ params }) {
                       >
                         <input
                           type="radio"
+                          required
                           id={`respuesta_${respuesta.id}`}
                           name={`pregunta_${pregunta.id}`}
                           value={respuesta.id}
@@ -263,6 +264,8 @@ export default function Page({ params }) {
                       <div className="w-1/4 flex flex-col p-3">
                         <label htmlFor="files">Subir evidencia:</label>
                         <input
+                          accept=".rar"
+                          required
                           type="file"
                           id="files"
                           name="files"
@@ -279,6 +282,7 @@ export default function Page({ params }) {
             <div className="flex flex-col p-3 justify-center items-center">
               <label>Valoracion argumentativa</label>
               <textarea
+                required
                 cols="40"
                 rows="5"
                 value={valoracionLocalStorage}
