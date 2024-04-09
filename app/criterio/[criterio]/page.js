@@ -208,7 +208,7 @@ export default function Page({ params }) {
               <button
                 type="button"
                 onClick={resetForm}
-                className="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-700 focus:outline-none focus:shadow-outline-gray active:bg-gray-800 mt-4"
+                className="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-700 focus:outline-none focus:shadow-outline-gray active:bg-gray-800 my-4"
                 disabled={!formEnviado}
               >
                 Editar respuestas
@@ -217,7 +217,7 @@ export default function Page({ params }) {
             {preguntasFiltradas.map((pregunta) => (
               <div
                 key={pregunta.id}
-                className="mb-4 p-5 text-center flex items-center justify-center w-full "
+                className="mb-4 p-5 text-center flex items-center justify-center w-full bg-slate-100 rounded-lg shadow-lg"
               >
                 <div
                   className={`w-3/4 p-3 ${

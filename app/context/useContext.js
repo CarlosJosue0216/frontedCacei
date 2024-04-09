@@ -9,6 +9,7 @@ export default function UserProvider({ children }) {
   const [preguntas, setPreguntas] = useState({});
   const [archivos, setArchivos] = useState({})
   const [dataUser, setDataUser] = useState({})
+  const [allUsers, setAllUsers] = useState({})
   const [user, setUser] = useState(() => {
     const storedUserData = localStorage?.getItem('userData');
     return storedUserData ? JSON.parse(storedUserData) : null;
@@ -23,14 +24,19 @@ export default function UserProvider({ children }) {
     setArchivos(data)
     
   }
+  const getUsers = async()=>{
+    const { data } = await axios("http://localhost:4000/api/usuarios/getUsers");
+    setAllUsers(data)
+  }
   useEffect(() => {
     getPreguntas();
     getFiles()
+    getUsers()
     console.log(archivos)
   }, []);
 
   return (
-    <UserContext.Provider value={{ user,setUser, preguntas,getPreguntas,dataUser,archivos,getFiles }}>
+    <UserContext.Provider value={{ user,setUser, preguntas,getPreguntas,dataUser,archivos,getFiles,allUsers,getUsers }}>
       {children}
     </UserContext.Provider>
   );
