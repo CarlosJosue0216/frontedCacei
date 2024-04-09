@@ -36,7 +36,7 @@ export default function Dashboar() {
           </div>
         )}
         <div className="mb-2 p-5 text-xl font-bold bg-sky-200 rounded-lg w-full">
-          <Link href="#" className=" p-5">
+          <Link href="/admin/resultados" className=" p-5">
             Resultados
           </Link>
         </div>
