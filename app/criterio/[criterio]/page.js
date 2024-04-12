@@ -128,7 +128,7 @@ export default function Page({ params }) {
 
       try {
         const response = await axios.post(
-          "http://localhost:4000/api/files/upload",
+          `${process.env.NEXT_PUBLIC_Backend_URL}api/files/upload`,
           {
             archivoFront: elemento.evidenciaFile,
             idUsuario: elemento.idUsuario,
@@ -155,7 +155,7 @@ export default function Page({ params }) {
       console.log(elemento);
       try {
         const response = await axios.post(
-          "http://localhost:4000/api/resultado/addResult",
+          `${process.env.NEXT_PUBLIC_Backend_URL}api/resultado/addResult`,
           {
             idUsuario: elemento.idUsuario,
             idPregunta: clave,

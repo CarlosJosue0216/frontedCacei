@@ -21,7 +21,7 @@ const PreguntasPage = () => {
         return
     }
     try {
-        const url = `http://localhost:4000/api/preguntas/addQuestionAndAnswers`
+        const url = `${process.env.NEXT_PUBLIC_Backend_URL}api/preguntas/addQuestionAndAnswers`
         const {data} = await axios.post(url, {titulo:pregunta,criterio,tipo,respuestas})
         console.log(data)
         setMessage({
@@ -70,6 +70,7 @@ const eliminarRespuesta = (index) => {
 
   return (
     <div className="w-full h-screen flex flex-col justify-center items-center">
+      <h1 className="text-4xl font-black ">Añadir nueva pregunta</h1>
       <form
         className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-3/4"
         onSubmit={guardarPreguntaYRespuestas}
@@ -164,7 +165,7 @@ const eliminarRespuesta = (index) => {
         </div>
         <div className="flex items-center justify-between">
           <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            className="bg-slate-500 hover:bg-slate-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             type="submit"
           >
             Enviar

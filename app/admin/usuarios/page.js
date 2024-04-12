@@ -24,6 +24,31 @@ const colums = [
     sortable: true,
   },
 ];
+const customStyles = {
+  rows: {
+    style: {
+      minHeight: "72px", // override the row height
+    },
+  },
+  headCells: {
+    style: {
+      paddingLeft: "8px", // override the cell padding for head cells
+      paddingRight: "8px",
+      textTransform: "capitalize",
+      backgroundColor: "#083344",
+      color: "white",
+      fontWeight: "700",
+      fontSize: "1rem",
+      
+    },
+  },
+  cells: {
+    style: {
+      paddingLeft: "8px", // override the cell padding for data cells
+      paddingRight: "8px",
+    },
+  },
+};
 const Usuarios = () => {
   const { getUsers, allUsers } = useUser(); // Ajusta esto según tu contexto
   const [show, setShow] = useState(false);
@@ -45,22 +70,23 @@ const Usuarios = () => {
 
     fetchData();
   }, [allUsers, getUsers]);
-  console.log(allUsers.data)
+  console.log(allUsers);
   return (
     <div>
       {loading ? (
         <div>cargando...</div>
       ) : (
         show &&
-        Array.isArray(allUsers.data) && (
+        Array.isArray(allUsers?.data) && (
           <div className=" mx-auto w-full ">
             <DataTable
             className=" mx-auto w-full rounded-lg p-5"
-              
+            customStyles={customStyles}
               columns={colums}
               data={allUsers.data}
               pagination
               responsive
+              striped={true}
               paginationPerPage={10}
             />
           </div>

@@ -5,7 +5,7 @@ import { redirect } from "next/navigation"
 export async function login(rawFormData){
     
     try {
-        const response = await axios.post("http://localhost:4000/api/usuarios/login", rawFormData)
+        const response = await axios.post(`${process.env.NEXT_PUBLIC_Backend_URL}api/usuarios/login`, rawFormData)
         
         const result = {
             msg: response.data.msg,
@@ -25,7 +25,7 @@ export async function login(rawFormData){
 export async function userLoged(nombre){
     
     try {
-        const response = await axios.post("http://localhost:4000/api/usuarios/userLoged", {nombre}       )
+        const response = await axios.post(`${process.env.NEXT_PUBLIC_Backend_URL}api/usuarios/userLoged`, {nombre}       )
         return response.data.msg
     } catch (error) {
         

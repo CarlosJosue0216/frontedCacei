@@ -35,7 +35,7 @@ const customStyles = {
       paddingLeft: "8px", // override the cell padding for head cells
       paddingRight: "8px",
       textTransform: "capitalize",
-      backgroundColor: "blue",
+      backgroundColor: "#083344",
       color: "white",
       fontWeight: "700",
       fontSize: "1rem",
@@ -69,6 +69,7 @@ const MostrarTodas = () => {
             columns={columns}
             data={resultados}
             pagination
+            striped={true}
             responsive
             paginationPerPage={10}
           />

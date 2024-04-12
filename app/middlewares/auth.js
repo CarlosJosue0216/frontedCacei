@@ -8,7 +8,7 @@ export  function Auth() {
   const { user } =  useUser();
   console.log(user)
   if (user?.rol === 0) {
-    if (pathName.startsWith('/admin')) {
+    if (pathName.startsWith('/admin') || pathName.startsWith('/') && pathName !== '/login') {
       // Permitir navegación en subrutas para el administrador
       // Puedes agregar más lógica específica para las subrutas aquí
     } else {
