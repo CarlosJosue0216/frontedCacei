@@ -11,7 +11,7 @@ const NavBar = () => {
 
   useEffect(() => {
     // Actualiza el estado solo si la ruta no es "/"
-    if (path == "/login" || path.startsWith("/admin")) {
+    if (path == "/login" ) {
       setshowNav(false);
     } else {
       setshowNav(true);

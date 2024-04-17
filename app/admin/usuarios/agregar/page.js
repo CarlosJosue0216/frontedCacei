@@ -141,14 +141,12 @@ const AgregarUsuarios = () => {
             value={rol}
           >
             <option value="0" key="tipo1">
-              0
+              Usuario
             </option>
             <option value="1" key="tipo2">
-              1
+              Administrador
             </option>
-            <option value="2" key="tipo3">
-              2
-            </option>
+           
           </select>
         </div>
 
