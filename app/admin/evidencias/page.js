@@ -47,7 +47,7 @@ const Evidencias = () => {
                     <Link
                       className="text-lg font-semibold capitalize hover:cursor-pointer hover:text-blue-500"
                       target="_blank"
-                      href={`http://localhost:4000/uploads/${archivo.originalname}`}
+                      href={`https://backendcacei-production.up.railway.app/uploads/${archivo.originalname}`}
                     >
                       {`Ir al archivo ${archivo.originalname}`}
                     </Link>
