@@ -23,7 +23,7 @@ const Evidencias = () => {
     };
 
     fetchData();
-    console.log(archivos);
+    
   }, [archivos, getFiles]);
   return (
     <div className="w-full h-screen justify-center items-center p-5">
@@ -47,7 +47,7 @@ const Evidencias = () => {
                     <Link
                       className="text-lg font-semibold capitalize hover:cursor-pointer hover:text-blue-500"
                       target="_blank"
-                      href={`http://localhost:4000/uploads/${archivo.originalname}`}
+                      href={`https://backendcacei.onrender.com/${archivo.originalname}`}
                     >
                       {`Ir al archivo ${archivo.originalname}`}
                     </Link>

@@ -2,7 +2,11 @@
 import { useUser } from "@/app/context/useContext";
 import { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
-
+function formatearFecha(fechaEnviada) {
+  const fecha = new Date(fechaEnviada);
+  const fechaFormateada = `${String(fecha.getDate()).padStart(2, '0')}/${String(fecha.getMonth() + 1).padStart(2, '0')}/${fecha.getFullYear()}`;
+  return fechaFormateada;
+}
 const columns = [
   
   
@@ -25,6 +29,11 @@ const columns = [
   {
     name: "Criterio",
     selector: (row) => row.criterio,
+    sortable: true,
+  },
+  {
+    name: "Fecha Enviada",
+    selector: (row) => formatearFecha(row.Fecha_Enviada),
     sortable: true,
   },
 ];

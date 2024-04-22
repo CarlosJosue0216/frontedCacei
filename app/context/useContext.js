@@ -8,16 +8,20 @@ export default function UserProvider({ children }) {
   const [preguntas, setPreguntas] = useState({});
   const [archivos, setArchivos] = useState({});
   const [dataUser, setDataUser] = useState({});
-  const [allUsers, setAllUsers] = useState({})
-  const [user, setUser] = useState(() => {
-    const storedUserData = localStorage?.getItem('userData');
-    return storedUserData ? JSON.parse(storedUserData) : null;
-  });
+  const [allUsers, setAllUsers] = useState({});
   const [resultados, setResultados] = useState([]);
+
+  const [user, setUser] = useState(() => {
+    if (typeof window !== "undefined") {
+      const storedUserData = localStorage?.getItem('userData');
+      return storedUserData ? JSON.parse(storedUserData) : null;
+    }
+    return null;
+  });
 
   const getPreguntas = async () => {
     const { data } = await axios(`${process.env.NEXT_PUBLIC_Backend_URL}api/preguntas/viewAll`);
-    setPreguntas(data); // Establece las preguntas en el estado preguntas
+    setPreguntas(data);
     setDataUser(data);
   };
 
@@ -29,15 +33,16 @@ export default function UserProvider({ children }) {
   const getResults = async () => {
     try {
       const { data } = await axios(`${process.env.NEXT_PUBLIC_Backend_URL}api/resultado/getAllResults`);
-      setResultados(data); // Establece los resultados en el estado resultados
+      setResultados(data);
     } catch (error) {
       console.error("Error al obtener los resultados:", error);
     }
   };
+
   const getUsers = async () => {
     try {
       const { data } = await axios(`${process.env.NEXT_PUBLIC_Backend_URL}api/usuarios/getUsers`);
-      setAllUsers(data); // Establece los resultados en el estado resultados
+      setAllUsers(data);
     } catch (error) {
       console.error("Error al obtener los resultados:", error);
     }
@@ -46,13 +51,12 @@ export default function UserProvider({ children }) {
   useEffect(() => {
     getPreguntas();
     getFiles();
-    getUsers()
-    getResults(); // Llama a la función para obtener los resultados al montar el componente
-    
+    getUsers();
+    getResults();
   }, []);
 
   return (
-    <UserContext.Provider value={{ user, setUser, preguntas, getPreguntas, dataUser, archivos, resultados,allUsers,getUsers }}>
+    <UserContext.Provider value={{ user, setUser, preguntas, getPreguntas, dataUser, archivos, resultados, allUsers, getUsers }}>
       {children}
     </UserContext.Provider>
   );

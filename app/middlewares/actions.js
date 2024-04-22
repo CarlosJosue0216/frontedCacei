@@ -11,7 +11,6 @@ export async function login(rawFormData){
             msg: response.data.msg,
             typeAlert: true
         }
-        console.log(result)
         return result
     } catch (error) {
         const result = {

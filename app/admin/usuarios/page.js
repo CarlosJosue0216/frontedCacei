@@ -70,7 +70,6 @@ const Usuarios = () => {
 
     fetchData();
   }, [allUsers, getUsers]);
-  console.log(allUsers);
   return (
     <div>
       {loading ? (

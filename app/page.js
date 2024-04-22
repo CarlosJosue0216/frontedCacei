@@ -79,7 +79,7 @@ export default function Home() {
   );
   const { user } = useUser();
   const criterioUser = user?.criterio;
-  console.log(criterioUser);
+
   const handleCriterio = (criterioId) => {
     setCriteriosState((prevState) => ({
       ...prevState,
