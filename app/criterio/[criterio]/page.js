@@ -246,22 +246,40 @@ export default function Page({ params }) {
                         key={respuesta.id}
                         className="flex items-center mx-2 p-2"
                       >
-                        <input
-                          type="radio"
-                          required
-                          id={`respuesta_${respuesta.id}`}
-                          name={`pregunta_${pregunta.id}`}
-                          value={respuesta.id}
-                          className="mx-2"
-                          onChange={() =>
-                            handleRespuestaChange(pregunta.id, respuesta.id)
-                          }
-                          checked={
-                            respuestasSeleccionadas[pregunta.id]?.contenido ===
-                            respuesta.id
-                          }
-                          disabled={formEnviado}
-                        />
+                        {pregunta.tipo === 2 ? (
+                          <input
+                            type="checkbox"
+                            id={`respuesta_${respuesta.id}`}
+                            name={`pregunta_${pregunta.id}_checkbox`}
+                            value={respuesta.id}
+                            className="mx-2"
+                            onChange={() =>
+                              handleRespuestaChange(pregunta.id, respuesta.id)
+                            }
+                            checked={
+                              respuestasSeleccionadas[pregunta.id]
+                                ?.contenido === respuesta.id
+                            }
+                            disabled={formEnviado}
+                          />
+                        ) : (
+                          <input
+                            type="radio"
+                            required
+                            id={`respuesta_${respuesta.id}`}
+                            name={`pregunta_${pregunta.id}`}
+                            value={respuesta.id}
+                            className="mx-2"
+                            onChange={() =>
+                              handleRespuestaChange(pregunta.id, respuesta.id)
+                            }
+                            checked={
+                              respuestasSeleccionadas[pregunta.id]
+                                ?.contenido === respuesta.id
+                            }
+                            disabled={formEnviado}
+                          />
+                        )}
                         <label
                           htmlFor={`respuesta_${respuesta.id}`}
                           className="cursor-pointer"
