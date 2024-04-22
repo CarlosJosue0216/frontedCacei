@@ -47,9 +47,9 @@ const criteriosData = [
   {
     id: 2,
     title: "Criterio 2.- Estudiantes",
-    path: "/criterio/1",
+    path: "/criterio/2",
     subcriterios: [
-      { id: 2.1, title: "Criterio 1.1.- Admisión", path: "/criterio/2.1" },
+      { id: 2.1, title: "Criterio 2.1.- Admisión", path: "/criterio/2.1" },
       {
         id: 2.2,
         title:
@@ -69,7 +69,131 @@ const criteriosData = [
       { id: 2.5, title: "Criterio 2.5.- Titulación", path: "/criterio/2.5" },
     ],
   },
+  {
+    id: 3,
+    title: "Criterio 3.- Plan de Estudios",
+    path: "/criterio/3",
+    subcriterios: [
+      {
+        id: 3.1,
+        title: "Indicador 3.1.- Grupos de interés del PE",
+        path: "/criterio/3.1",
+      },
+      {
+        id: 3.2,
+        title: "Indicador 3.2.- Pertinencia",
+        path: "/criterio/3.2",
+      },
+      {
+        id: 3.3,
+        title: "Indicador 3.3.- Organización curricular",
+        path: "/criterio/3.3",
+      },
+      {
+        id: 3.4,
+        title: "Indicador 3.4.- Congruencia entre los objetivos educacionales del PE y la misión de la institución",
+        path: "/criterio/3.4",
+      },
+      {
+        id: 3.5,
+        title: "Indicador 3.5.- Atributos del egresado",
+        path: "/criterio/3.5",
+      },
+      {
+        id: 3.6,
+        title: "Indicador 3.6.- Flexibilidad curricular",
+        path: "/criterio/3.6",
+      },
+    ],
+  },
+  {
+    id: 4,
+    title: "Criterio 4.- Valoración y Mejora Continua",
+    path: "/criterio/4",
+    subcriterios: [
+      {
+        id: 4.1,
+        title: "Indicador 4.1.- Evaluación de los objetivos educacionales del programa",
+        path: "/criterio/4.1",
+      },
+      {
+        id: 4.2,
+        title: "Indicador 4.2.- Evaluación y logro de los atributos del egresado",
+        path: "/criterio/4.2",
+      },
+      {
+        id: 4.3,
+        title: "Indicador 4.3.- Valoración de los índices de rendimiento escolar",
+        path: "/criterio/4.3",
+      },
+      {
+        id: 4.4,
+        title: "Indicador 4.4.- Mejora continua",
+        path: "/criterio/4.4",
+      },
+    ],
+  },
+  {
+    id: 5,
+    title: "Criterio 5.- Infraestructura y Equipamiento",
+    path: "/criterio/5",
+    subcriterios: [
+      {
+        id: 5.1,
+        title: "Indicador 5.1.- Aulas, laboratorios, cubículos y oficinas de apoyo",
+        path: "/criterio/5.1",
+      },
+      {
+        id: 5.2,
+        title: "Indicador 5.2.- Recursos informáticos",
+        path: "/criterio/5.2",
+      },
+      {
+        id: 5.3,
+        title: "Indicador 5.3.- Centro de información",
+        path: "/criterio/5.3",
+      },
+      {
+        id: 5.4,
+        title: "Indicador 5.4.- Manuales de uso y seguridad",
+        path: "/criterio/5.4",
+      },
+      {
+        id: 5.5,
+        title: "Indicador 5.5.- Mantenimiento, modernización y actualización",
+        path: "/criterio/5.5",
+      },
+    ],
+  },
+  {
+    id: 6,
+    title: "Criterio 6.- Soporte Institucional",
+    path: "/criterio/6",
+    subcriterios: [
+      {
+        id: 6.1,
+        title: "Indicador 6.1.- Liderazgo institucional",
+        path: "/criterio/6.1",
+      },
+      {
+        id: 6.2,
+        title: "Indicador 6.2.- Servicios institucionales",
+        path: "/criterio/6.2",
+      },
+      {
+        id: 6.3,
+        title: "Indicador 6.3.- Recursos financieros",
+        path: "/criterio/6.3",
+      },
+      {
+        id: 6.4,
+        title: "Indicador 6.4.- Personal de apoyo",
+        path: "/criterio/6.4",
+      },
+    ],
+  },
 ];
+
 export default function Home() {
   const [criteriosState, setCriteriosState] = useState(
     criteriosData.reduce(
@@ -111,7 +235,7 @@ export default function Home() {
   return (
     <main className="flex min-h-screen w-full flex-col items-center bg-gray-100 p-24">
       <h1 className="text-5xl font-black p-5 my-5">
-        Criterios e indicadores para programas de ingenieria
+      Criterios e indicadores para programas de ingeniería.
       </h1>
       {loading ? (
         <div>cargando...</div>

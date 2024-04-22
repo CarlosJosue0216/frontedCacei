@@ -22,6 +22,11 @@ const columns = [
     selector: (row) => row.nombre_usuario,
     sortable: true,
   },
+  {
+    name: "Criterio",
+    selector: (row) => row.criterio,
+    sortable: true,
+  },
 ];
 
 const customStyles = {

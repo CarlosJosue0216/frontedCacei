@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import React, { useState } from "react";
+import CerrarSesion from "./cerrarSesion";
 
 export default function Dashboar() {
   const [showPreguntas, setSetshowPreguntas] = useState(false);
@@ -22,12 +23,12 @@ export default function Dashboar() {
         </div>
         {showUsers && (
           <div>
-            <div className="mb-2 ms-3 py-5 text-xl font-bold hover:bg-sky-800 rounded-lg w-full">
+            <div className="mb-2 ms-3 py-5 text-xl font-bold bg-sky-700 hover:bg-sky-800 rounded-lg w-full">
               <Link href="/admin/usuarios" className=" p-5 ">
                 Todos los usuarios
               </Link>
             </div>
-            <div className="mb-2 ms-3 py-5 text-xl font-bold hover:bg-sky-800 rounded-lg w-full">
+            <div className="mb-2 ms-3 py-5 text-xl font-bold bg-sky-700 hover:bg-sky-800 rounded-lg w-full">
               <Link href="/admin/usuarios/agregar" className=" py-5 ">
                 Agregar usuario
               </Link>
@@ -42,12 +43,12 @@ export default function Dashboar() {
         </div>
         {showPreguntas && (
           <div>
-            <div className="mb-2 ms-3 py-5 text-xl font-bold hover:bg-sky-800 rounded-lg w-full">
+            <div className="mb-2 ms-3 py-5 text-xl font-bold bg-sky-700 hover:bg-sky-800  rounded-lg w-full">
               <Link href="/admin/preguntas" className=" py-5 ">
                 Añadir Preguntas
               </Link>
             </div>
-            <div className="mb-2 ms-3 py-5 text-xl font-bold hover:bg-sky-800 rounded-lg w-full">
+            <div className="mb-2 ms-3 py-5 text-xl font-bold bg-sky-700 hover:bg-sky-800 rounded-lg w-full">
               <Link href="/admin/preguntas/verTodas" className=" py-5 ">
                 Todas las preguntas
               </Link>
@@ -65,6 +66,7 @@ export default function Dashboar() {
           </Link>
         </div>
       </div>
+      <CerrarSesion/>
     </div>
   );
 }
