@@ -237,11 +237,11 @@ export default function Home() {
       </h1>
       {loading ? (
         <div>cargando...</div>
-      ) : rolUser != 0 ? (
+      ) : user?.rol != 0 ? (
         <div className="p-5 bg-white rounded-lg shadow-md my-5 ">
           <div className="p-5">
             {criteriosData.map((criterio) =>
-              (criterio?.id == +criterioUser) & (rolUser != 0) ? (
+              (criterio?.id == +criterioUser) & (user?.rol != 0) ? (
                 <div key={criterio.id} className="p-2">
                   <h1
                     className="font-bold text-2xl hover:cursor-pointer flex items-center gap-10"
