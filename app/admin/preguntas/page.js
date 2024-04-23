@@ -23,7 +23,7 @@ const PreguntasPage = () => {
     try {
         const url = `${process.env.NEXT_PUBLIC_Backend_URL}api/preguntas/addQuestionAndAnswers`
         const {data} = await axios.post(url, {titulo:pregunta,criterio,tipo,respuestas})
-        console.log(data)
+        
         setMessage({
             msg: data.msg,
             typeAlert:true
@@ -31,7 +31,6 @@ const PreguntasPage = () => {
           setAlerta(true)
           
       } catch (error) {
-        console.log(error)
         setAlerta(true)
         setMessage({
           msg: error.response.data.msg,

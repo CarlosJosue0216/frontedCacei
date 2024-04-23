@@ -12,10 +12,7 @@ const AgregarUsuarios = () => {
   const [message, setMessage] = useState(null);
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(nombre);
-    console.log(password);
-    console.log(criterio);
-    console.log(rol);
+    
     if ([nombre, password, criterio, rol].includes("")) {
       setAlerta(true);
       setMessage({
@@ -31,14 +28,12 @@ const AgregarUsuarios = () => {
           rol,
           criterio,
         });
-        console.log(data);
         setMessage({
           msg: data.msg,
           typeAlert: true,
         });
         setAlerta(true);
       } catch (error) {
-        console.log(error);
         setAlerta(true);
         setMessage({
           msg: error?.response.data.msg,

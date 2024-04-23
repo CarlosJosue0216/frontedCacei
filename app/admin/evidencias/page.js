@@ -23,7 +23,7 @@ const Evidencias = () => {
     };
 
     fetchData();
-    console.log(archivos);
+    
   }, [archivos, getFiles]);
   return (
     <div className="w-full h-screen justify-center items-center p-5">

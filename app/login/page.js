@@ -21,8 +21,7 @@ const page = () => {
 
   const formLogin = async (e) => {
     e.preventDefault();
-    console.log(nombre);
-    console.log(numControl);
+    
     const rawFormData = {
       nombre: nombre,
       numControl: numControl,
@@ -30,29 +29,28 @@ const page = () => {
     try {
       await login(rawFormData)
         .then((result) => {
-          console.log(result);
           setAlerta(result);
           setShow(true);
           if (result.msg == "Login exitoso") {
             userLoged(rawFormData.nombre)
               .then((result) => {
                 setUser(result);
-                localStorage.setItem("userData", JSON.stringify(result));
+                if (typeof window !== "undefined") {
+                  // Tu código que utiliza localStorage aquí
+                  localStorage.setItem("userData", JSON.stringify(result));
+                }
 
                 router.push("/admin");
-                console.log(result);
+                
               })
               .catch((err) => {
-                console.log(err);
               });
             setShow(false);
           }
         })
         .catch((err) => {
-          console.log(err);
         });
     } catch (error) {
-      console.log(error);
       setShow(false);
       setNombre("");
       setNumControl("");

@@ -15,13 +15,26 @@ export default function Page({ params }) {
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(true);
   const [respuestasSeleccionadas, setRespuestasSeleccionadas] = useState(() => {
-    const storedAnswers = localStorage.getItem(respuestasKey);
-    return storedAnswers ? JSON.parse(storedAnswers) : {};
+    if (typeof window !== "undefined") {
+      const storedAnswers = localStorage.getItem(respuestasKey);
+      return storedAnswers ? JSON.parse(storedAnswers) : {};
+    }
   });
   const [valoracionLocalStorage, setValoracionLocalStorage] = useState(() => {
-    const storedValoracion = localStorage.getItem(valoracionKey);
-    return storedValoracion || "";
+    if (typeof window !== "undefined") {
+      const storedValoracion = localStorage.getItem(valoracionKey);
+      return storedValoracion || "";
+    }
   });
+  const [formEnviado, setFormEnviado] = useState(() => {
+    if (typeof window !== "undefined") {
+
+      const storedFormEnviado = localStorage.getItem(formEnviadoKey);
+      return storedFormEnviado ? JSON.parse(storedFormEnviado) : false;
+    }
+  });
+  // Tu código que utiliza localStorage aquí
+
   const [evidenciaFile, setEvidenciaFile] = useState(null);
   const [valoracion, setValoracion] = useState("");
   const [respuestasFormulario, setRespuestasFormulario] = useState({});
@@ -29,10 +42,6 @@ export default function Page({ params }) {
   const [formReset, setFormReset] = useState(false);
   const [alerta, setAlerta] = useState(false);
   const [message, setMessage] = useState(null);
-  const [formEnviado, setFormEnviado] = useState(() => {
-    const storedFormEnviado = localStorage.getItem(formEnviadoKey);
-    return storedFormEnviado ? JSON.parse(storedFormEnviado) : false;
-  });
   const resetForm = () => {
     // Limpiar el localStorage al reiniciar el formulario
     setFormEnviado(false);
@@ -58,27 +67,34 @@ export default function Page({ params }) {
 
   useEffect(() => {
     const loadStoredAnswers = () => {
-      const storedAnswers = localStorage.getItem(respuestasKey);
-      if (storedAnswers) {
-        setRespuestasSeleccionadas(JSON.parse(storedAnswers));
+      if (typeof window !== "undefined") {
+        // Tu código que utiliza localStorage aquí
+        const storedAnswers = localStorage.getItem(respuestasKey);
+        if (storedAnswers) {
+          setRespuestasSeleccionadas(JSON.parse(storedAnswers));
+        }
       }
     };
 
     loadStoredAnswers();
-
-    const storedFormEnviado = localStorage.getItem(formEnviadoKey);
-    if (storedFormEnviado) {
-      setFormEnviado(JSON.parse(storedFormEnviado));
+    if (typeof window !== "undefined") {
+      // Tu código que utiliza localStorage aquí
+      const storedFormEnviado = localStorage.getItem(formEnviadoKey);
+      if (storedFormEnviado) {
+        setFormEnviado(JSON.parse(storedFormEnviado));
+      }
     }
   }, [criterio]);
+  if (typeof window !== "undefined") {
+    // Tu código que utiliza localStorage aquí
+    const saveAnswersToLocalStorage = (respuestas) => {
+      localStorage.setItem(respuestasKey, JSON.stringify(respuestas));
+    };
 
-  const saveAnswersToLocalStorage = (respuestas) => {
-    localStorage.setItem(respuestasKey, JSON.stringify(respuestas));
-  };
-
-  const saveFormEnviadoToLocalStorage = (value) => {
-    localStorage.setItem(formEnviadoKey, JSON.stringify(value));
-  };
+    const saveFormEnviadoToLocalStorage = (value) => {
+      localStorage.setItem(formEnviadoKey, JSON.stringify(value));
+    };
+  }
   const handleValoracion = (value) => {
     const newRespuestas = {
       ...respuestasSeleccionadas,
@@ -91,7 +107,10 @@ export default function Page({ params }) {
 
     // Guardar las respuestas en el localStorage
     saveAnswersToLocalStorage(newRespuestas);
-    localStorage.setItem(valoracionKey, value);
+    if (typeof window !== "undefined") {
+      // Tu código que utiliza localStorage aquí
+      localStorage.setItem(valoracionKey, value);
+    }
   };
   const handleRespuestaChange = (preguntaId, contenido) => {
     const newRespuestas = {
@@ -117,13 +136,9 @@ export default function Page({ params }) {
       },
     });
   };
-  console.log(respuestasFormulario);
-  console.log(respuestasSeleccionadas);
   const handleSubmit = async (e) => {
     e.preventDefault();
     for (const clave in respuestasFormulario) {
-      console.log("Iteración para clave:", clave);
-
       const elemento = respuestasFormulario[clave];
 
       try {
@@ -140,7 +155,6 @@ export default function Page({ params }) {
             },
           }
         );
-        console.log(response.data.resultado);
         setMessage({
           msg: response?.data.resultado,
           typeAlert: true,
@@ -152,7 +166,6 @@ export default function Page({ params }) {
     }
     for (const clave in respuestasSeleccionadas) {
       const elemento = respuestasSeleccionadas[clave];
-      console.log(elemento);
       try {
         const response = await axios.post(
           `${process.env.NEXT_PUBLIC_Backend_URL}api/resultado/addResult`,
@@ -160,9 +173,9 @@ export default function Page({ params }) {
             idUsuario: elemento.idUsuario,
             idPregunta: clave,
             idRespuesta: elemento.contenido,
+            argumentacion: valoracion,
           }
         );
-        console.log("Respuesta del servidor:", response);
         setMessage({
           msg: response?.data.msg,
           typeAlert: true,
