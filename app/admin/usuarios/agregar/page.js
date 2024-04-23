@@ -12,7 +12,7 @@ const AgregarUsuarios = () => {
   const [message, setMessage] = useState(null);
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if ([nombre, password, criterio, rol].includes("")) {
       setAlerta(true);
       setMessage({
@@ -41,13 +41,13 @@ const AgregarUsuarios = () => {
         });
       }
     }
-    setNombre("")
-    setPassword(null)
-    setRol(null)
-    setCriterio(null)
+    setNombre("");
+    setPassword(null);
+    setRol(null);
+    setCriterio(null);
     setTimeout(() => {
-      setAlerta(false)
-      setMessage({})
+      setAlerta(false);
+      setMessage({});
     }, 4000);
   };
   return (
@@ -136,12 +136,11 @@ const AgregarUsuarios = () => {
             value={rol}
           >
             <option value="0" key="tipo1">
-              Usuario
-            </option>
-            <option value="1" key="tipo2">
               Administrador
             </option>
-           
+            <option value="1" key="tipo2">
+              Usuario
+            </option>
           </select>
         </div>
 
